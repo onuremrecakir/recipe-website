@@ -3,9 +3,11 @@ import { Recipe } from '../lib/api';
 
 interface RecipeCardProps {
   recipe: Recipe;
+  showInstructions: boolean;
+  onToggleInstructions: () => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, showInstructions, onToggleInstructions }) => {
   return (
     <div className="recipe-card">
       <h1 className="recipe-title">{recipe.title}</h1>
@@ -42,11 +44,22 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
       
       {recipe.instructions && (
         <div className="recipe-instructions">
-          <h2>Instructions</h2>
-          <div 
-            className="instructions-text"
-            dangerouslySetInnerHTML={{ __html: recipe.instructions }}
-          />
+          <button 
+            onClick={onToggleInstructions} 
+            className="cooking-button"
+          >
+            {showInstructions ? 'Hide Instructions' : "Let's Get Cooking!"}
+          </button>
+          
+          {showInstructions && (
+            <div className="instructions-content">
+              <h2>Instructions</h2>
+              <div 
+                className="instructions-text"
+                dangerouslySetInnerHTML={{ __html: recipe.instructions }}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>

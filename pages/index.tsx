@@ -7,10 +7,12 @@ export default function Home() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const loadRandomRecipe = async () => {
     setLoading(true);
     setError(null);
+    setShowInstructions(false);
     
     try {
       const randomRecipe = await fetchRandomRecipe();
@@ -33,16 +35,14 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Random Recipe Generator</title>
-        <meta name="description" content="Discover delicious random recipes" />
+        <title>Recipe Finder</title>
+        <meta name="description" content="Discover delicious recipes" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="main">
         <div className="container">
-          <h1 className="page-title">Random Recipe Generator</h1>
-          
           {loading && (
             <div className="loading">
               <p>Loading a delicious recipe...</p>
@@ -60,7 +60,11 @@ export default function Home() {
           
           {recipe && !loading && (
             <>
-              <RecipeCard recipe={recipe} />
+              <RecipeCard 
+                recipe={recipe} 
+                showInstructions={showInstructions}
+                onToggleInstructions={() => setShowInstructions(!showInstructions)}
+              />
               <div className="button-container">
                 <button onClick={loadRandomRecipe} className="new-recipe-button">
                   Show Another Recipe
